@@ -1,0 +1,12 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "node-red-contrib-opcua": "~0.2.289",
+        "node-red-contrib-s7": "~3.1.0",
+        "node-red-contrib-s7-http": "~1.0.0",
+        "node-red-contrib-s7comm": "~1.1.6"
+    }
+}

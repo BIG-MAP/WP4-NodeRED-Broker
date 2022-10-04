@@ -1,0 +1,1253 @@
+[
+    {
+        "id": "b5fc218ba84a84b7",
+        "type": "tab",
+        "label": "Sandbox",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b529d91b6e17f2f3",
+        "type": "tab",
+        "label": "Start LLE",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "24cc146a41ea8fc9",
+        "type": "tab",
+        "label": "Monitor LLE",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c1508e333925eb49",
+        "type": "group",
+        "z": "b5fc218ba84a84b7",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "b7edbe811470008a",
+            "5c4bb286c19995b5",
+            "3ef7df5a72d4602b",
+            "bc4f00d1cd3fd2ba",
+            "657a71d029169c1f",
+            "41d6dd299c3571c6",
+            "036690569b72c93a",
+            "5abd3f997bcb0af2"
+        ],
+        "x": 134,
+        "y": 819,
+        "w": 712,
+        "h": 162
+    },
+    {
+        "id": "456536764ca5bda0",
+        "type": "group",
+        "z": "b5fc218ba84a84b7",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "e18bac4baefb792b",
+            "9fa149f219fb0a2c",
+            "c6de0ae378d527ca",
+            "f446aa699d6a3ca9",
+            "ea49ebc8a7a3fa21",
+            "d836a43ce2867083",
+            "60fe464aa339d0fc",
+            "be16ba10c92c3ccc"
+        ],
+        "x": 154,
+        "y": 599,
+        "w": 712,
+        "h": 162
+    },
+    {
+        "id": "e26494f3341828fa",
+        "type": "OpcUa-Endpoint",
+        "endpoint": "opc.tcp://host.docker.internal:62540/UA/BeltLightSensor",
+        "secpol": "None",
+        "secmode": "None",
+        "none": true,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "",
+        "userprivatekey": ""
+    },
+    {
+        "id": "ba1f4772cc4223b5",
+        "type": "OpcUa-Endpoint",
+        "endpoint": "opc.tcp://uademo.prosysopc.com:53530/OPCUA/SimulationServer",
+        "secpol": "None",
+        "secmode": "None",
+        "none": true,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "",
+        "userprivatekey": ""
+    },
+    {
+        "id": "63614ccd5fd691f7",
+        "type": "http request",
+        "z": "b5fc218ba84a84b7",
+        "name": "POST Request",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/{{topic}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 440,
+        "y": 100,
+        "wires": [
+            [
+                "54870ba3b1339766"
+            ]
+        ]
+    },
+    {
+        "id": "54870ba3b1339766",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "833737f3ab93fa20",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "name": "POST Start Message",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "start",
+        "payload": "{\"sleep_delay\":60}",
+        "payloadType": "json",
+        "x": 221,
+        "y": 100,
+        "wires": [
+            [
+                "63614ccd5fd691f7"
+            ]
+        ]
+    },
+    {
+        "id": "e18bac4baefb792b",
+        "type": "OpcUa-Item",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "item": "ns=2;i=6008",
+        "datatype": "String",
+        "value": "",
+        "name": "Status",
+        "x": 410,
+        "y": 640,
+        "wires": [
+            [
+                "9fa149f219fb0a2c"
+            ]
+        ]
+    },
+    {
+        "id": "9fa149f219fb0a2c",
+        "type": "OpcUa-Client",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "endpoint": "e26494f3341828fa",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Read value",
+        "x": 590,
+        "y": 640,
+        "wires": [
+            [
+                "c6de0ae378d527ca"
+            ]
+        ]
+    },
+    {
+        "id": "c6de0ae378d527ca",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "f446aa699d6a3ca9",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 640,
+        "wires": [
+            [
+                "e18bac4baefb792b"
+            ]
+        ]
+    },
+    {
+        "id": "ea49ebc8a7a3fa21",
+        "type": "OpcUa-Item",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "item": "ns=2;i=6008",
+        "datatype": "String",
+        "value": "",
+        "name": "Status",
+        "x": 410,
+        "y": 720,
+        "wires": [
+            [
+                "d836a43ce2867083"
+            ]
+        ]
+    },
+    {
+        "id": "d836a43ce2867083",
+        "type": "OpcUa-Client",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "endpoint": "e26494f3341828fa",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Write value",
+        "x": 590,
+        "y": 720,
+        "wires": [
+            [
+                "60fe464aa339d0fc"
+            ]
+        ]
+    },
+    {
+        "id": "60fe464aa339d0fc",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "be16ba10c92c3ccc",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "g": "456536764ca5bda0",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "finished",
+        "payloadType": "str",
+        "x": 250,
+        "y": 720,
+        "wires": [
+            [
+                "ea49ebc8a7a3fa21"
+            ]
+        ]
+    },
+    {
+        "id": "b7edbe811470008a",
+        "type": "OpcUa-Client",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "endpoint": "e26494f3341828fa",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Write value",
+        "x": 570,
+        "y": 860,
+        "wires": [
+            [
+                "5c4bb286c19995b5"
+            ]
+        ]
+    },
+    {
+        "id": "5c4bb286c19995b5",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "3ef7df5a72d4602b",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "x": 230,
+        "y": 860,
+        "wires": [
+            [
+                "bc4f00d1cd3fd2ba"
+            ]
+        ]
+    },
+    {
+        "id": "bc4f00d1cd3fd2ba",
+        "type": "OpcUa-Item",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "item": "ns=2;i=6004",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "IsStarted",
+        "x": 400,
+        "y": 860,
+        "wires": [
+            [
+                "b7edbe811470008a"
+            ]
+        ]
+    },
+    {
+        "id": "657a71d029169c1f",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "41d6dd299c3571c6",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 940,
+        "wires": [
+            [
+                "036690569b72c93a"
+            ]
+        ]
+    },
+    {
+        "id": "036690569b72c93a",
+        "type": "OpcUa-Item",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "item": "ns=2;i=6004",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "IsStarted",
+        "x": 400,
+        "y": 940,
+        "wires": [
+            [
+                "5abd3f997bcb0af2"
+            ]
+        ]
+    },
+    {
+        "id": "5abd3f997bcb0af2",
+        "type": "OpcUa-Client",
+        "z": "b5fc218ba84a84b7",
+        "g": "c1508e333925eb49",
+        "endpoint": "e26494f3341828fa",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Read value",
+        "x": 570,
+        "y": 940,
+        "wires": [
+            [
+                "657a71d029169c1f"
+            ]
+        ]
+    },
+    {
+        "id": "5a7832559e0a6aec",
+        "type": "http request",
+        "z": "b5fc218ba84a84b7",
+        "name": "GET Status",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/status",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 160,
+        "wires": [
+            [
+                "1d251b8c59547353"
+            ]
+        ]
+    },
+    {
+        "id": "1d251b8c59547353",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "024d0b5af3c95fbb",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 160,
+        "wires": [
+            [
+                "5a7832559e0a6aec"
+            ]
+        ]
+    },
+    {
+        "id": "e1a10492edfa01f3",
+        "type": "http request",
+        "z": "b5fc218ba84a84b7",
+        "name": "GET Stop",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/stop",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 420,
+        "y": 240,
+        "wires": [
+            [
+                "7ec0f41de43ee793"
+            ]
+        ]
+    },
+    {
+        "id": "7ec0f41de43ee793",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "fc5b139a7b040bfb",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 240,
+        "wires": [
+            [
+                "e1a10492edfa01f3"
+            ]
+        ]
+    },
+    {
+        "id": "9ce938bb86849eca",
+        "type": "http request",
+        "z": "b5fc218ba84a84b7",
+        "name": "GET Results",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/results",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 300,
+        "wires": [
+            [
+                "7b166ccd3fe5301c"
+            ]
+        ]
+    },
+    {
+        "id": "7b166ccd3fe5301c",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "4a695f119f7fbf49",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "9ce938bb86849eca"
+            ]
+        ]
+    },
+    {
+        "id": "539cf9d3f9a4fc08",
+        "type": "http request",
+        "z": "b5fc218ba84a84b7",
+        "name": "GET Start",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/start",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 420,
+        "y": 380,
+        "wires": [
+            [
+                "d6177f0e91f3041c"
+            ]
+        ]
+    },
+    {
+        "id": "d6177f0e91f3041c",
+        "type": "debug",
+        "z": "b5fc218ba84a84b7",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c608cd74139f671b",
+        "type": "inject",
+        "z": "b5fc218ba84a84b7",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 380,
+        "wires": [
+            [
+                "539cf9d3f9a4fc08"
+            ]
+        ]
+    },
+    {
+        "id": "cdfb660cc646a365",
+        "type": "OpcUa-Client",
+        "z": "b529d91b6e17f2f3",
+        "endpoint": "e26494f3341828fa",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Read value",
+        "x": 450,
+        "y": 260,
+        "wires": [
+            [
+                "c17e0db292a9a50b"
+            ]
+        ]
+    },
+    {
+        "id": "d84070ff35aaaa50",
+        "type": "OpcUa-Item",
+        "z": "b529d91b6e17f2f3",
+        "item": "ns=2;i=6004",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "IsStarted",
+        "x": 300,
+        "y": 260,
+        "wires": [
+            [
+                "cdfb660cc646a365"
+            ]
+        ]
+    },
+    {
+        "id": "b96dd3739dc18a6e",
+        "type": "inject",
+        "z": "b529d91b6e17f2f3",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 180,
+        "wires": [
+            [
+                "d84070ff35aaaa50"
+            ]
+        ]
+    },
+    {
+        "id": "23d58a21700f4293",
+        "type": "debug",
+        "z": "b529d91b6e17f2f3",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "cf5831fb4fc80d80",
+        "type": "http request",
+        "z": "b529d91b6e17f2f3",
+        "name": "GET Start",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/start",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 760,
+        "y": 340,
+        "wires": [
+            [
+                "23d58a21700f4293"
+            ]
+        ]
+    },
+    {
+        "id": "d28168337ec440fb",
+        "type": "OpcUa-Item",
+        "z": "b529d91b6e17f2f3",
+        "item": "ns=2;i=6004",
+        "datatype": "Boolean",
+        "value": "",
+        "name": "IsStarted",
+        "x": 760,
+        "y": 420,
+        "wires": [
+            [
+                "ae63215fcd703ef6"
+            ]
+        ]
+    },
+    {
+        "id": "ae63215fcd703ef6",
+        "type": "OpcUa-Client",
+        "z": "b529d91b6e17f2f3",
+        "endpoint": "e26494f3341828fa",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Write value",
+        "x": 910,
+        "y": 420,
+        "wires": [
+            [
+                "23d58a21700f4293"
+            ]
+        ]
+    },
+    {
+        "id": "c17e0db292a9a50b",
+        "type": "function",
+        "z": "b529d91b6e17f2f3",
+        "name": "Is True?",
+        "func": "if (msg.payload == true) {\n    return {payload: false}\n}\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 340,
+        "wires": [
+            [
+                "cf5831fb4fc80d80",
+                "d28168337ec440fb"
+            ]
+        ]
+    },
+    {
+        "id": "90bbba65c71f4ed7",
+        "type": "http request",
+        "z": "24cc146a41ea8fc9",
+        "name": "GET Status",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/status",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "444796d02fd5c22e",
+                "5fdf6669d02dacb4"
+            ]
+        ]
+    },
+    {
+        "id": "acaec4c6588be799",
+        "type": "inject",
+        "z": "24cc146a41ea8fc9",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "90bbba65c71f4ed7"
+            ]
+        ]
+    },
+    {
+        "id": "d7cd27035ddbf229",
+        "type": "OpcUa-Item",
+        "z": "24cc146a41ea8fc9",
+        "item": "ns=2;i=6008",
+        "datatype": "String",
+        "value": "{{ payload.status }}",
+        "name": "Status",
+        "x": 490,
+        "y": 300,
+        "wires": [
+            [
+                "db578ed87934c83f"
+            ]
+        ]
+    },
+    {
+        "id": "4794f61b0c731263",
+        "type": "http request",
+        "z": "24cc146a41ea8fc9",
+        "name": "GET Results",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/results",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 710,
+        "y": 380,
+        "wires": [
+            [
+                "4d8751b841dc2b38",
+                "1f99c6cda008651e",
+                "c2f79551ebdbdede"
+            ]
+        ]
+    },
+    {
+        "id": "db578ed87934c83f",
+        "type": "OpcUa-Client",
+        "z": "24cc146a41ea8fc9",
+        "endpoint": "e26494f3341828fa",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Write value",
+        "x": 650,
+        "y": 300,
+        "wires": [
+            [
+                "c2f79551ebdbdede"
+            ]
+        ]
+    },
+    {
+        "id": "30804c93274cd8e3",
+        "type": "OpcUa-Item",
+        "z": "24cc146a41ea8fc9",
+        "item": "ns=2;i=6003",
+        "datatype": "Float Array",
+        "value": "",
+        "name": "Results",
+        "x": 900,
+        "y": 440,
+        "wires": [
+            [
+                "7d95b81b8961858c"
+            ]
+        ]
+    },
+    {
+        "id": "4d8751b841dc2b38",
+        "type": "http request",
+        "z": "24cc146a41ea8fc9",
+        "name": "GET Stop",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/stop",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 900,
+        "y": 520,
+        "wires": [
+            [
+                "c2f79551ebdbdede"
+            ]
+        ]
+    },
+    {
+        "id": "c2f79551ebdbdede",
+        "type": "debug",
+        "z": "24cc146a41ea8fc9",
+        "name": "Print",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "7d95b81b8961858c",
+        "type": "OpcUa-Client",
+        "z": "24cc146a41ea8fc9",
+        "endpoint": "e26494f3341828fa",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "folderName4PKI": "",
+        "name": "Write value",
+        "x": 1070,
+        "y": 440,
+        "wires": [
+            [
+                "c2f79551ebdbdede"
+            ]
+        ]
+    },
+    {
+        "id": "1f99c6cda008651e",
+        "type": "function",
+        "z": "24cc146a41ea8fc9",
+        "name": "Extract array",
+        "func": "var payload = msg.payload.results;\n\nnode.log(\"info\");\n\nif (payload.length == 0) {\n    return null;\n}\n\nreturn {payload: payload};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 400,
+        "wires": [
+            [
+                "30804c93274cd8e3",
+                "c2f79551ebdbdede"
+            ]
+        ]
+    },
+    {
+        "id": "444796d02fd5c22e",
+        "type": "function",
+        "z": "24cc146a41ea8fc9",
+        "name": "Extract status",
+        "func": "var prev_status = flow.get(\"previous_status\");\nvar new_status = msg.payload = msg.payload.status;\nflow.set(\"previous_status\", new_status);\n\nif (prev_status != new_status) {\n    msg.payload = new_status;\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 260,
+        "wires": [
+            [
+                "d7cd27035ddbf229"
+            ]
+        ]
+    },
+    {
+        "id": "5fdf6669d02dacb4",
+        "type": "function",
+        "z": "24cc146a41ea8fc9",
+        "name": "Has Finished?",
+        "func": "if (msg.payload.status === 'finished') {\n    return {payload: true}\n}\n\nreturn null",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 380,
+        "wires": [
+            [
+                "4794f61b0c731263"
+            ]
+        ]
+    }
+]

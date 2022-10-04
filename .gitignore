@@ -1,2 +1,5 @@
 .DS_Store
-data/
+data/*
+!data/flows.json
+!data/package.json
+!data/settings.js
